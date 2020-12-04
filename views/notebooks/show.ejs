@@ -1,0 +1,81 @@
+<%- include("../partials/header") %>
+
+	<div class="row">
+		<div class="col-md-3">
+			<p class="lead">
+				Here I Am
+			</p>
+			<div class="list-group">
+				<a href = "#"><li class="list-group-item active">View Team Members</li></a>
+				
+				<!-- <li class="list-group-item">Info 2</li>
+				<li class="list-group-item">Info 3</li> -->
+			</div>
+			<div class="list-group">
+				<a href = "#"><li class="list-group-item active">Voice Channel</li></a>
+				
+				<!-- <li class="list-group-item">Info 2</li>
+				<li class="list-group-item">Info 3</li> -->
+			</div>
+			<div class="list-group">
+				<a href = "#"><li class="list-group-item active">Manage Your Files</li></a>
+				
+				<!-- <li class="list-group-item">Info 2</li>
+				<li class="list-group-item">Info 3</li> -->
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="thumbnail">
+				<img src="<%=notebook.image%>" class="img-responsive">
+				<div class="caption-full">
+					<h4>
+						<a><%=notebook.name%></a>
+					</h4>
+					<p>
+						<%=notebook.description%>
+					</p>
+					<p>
+ 						<em>Created by: <%= notebook.author.username %></em>
+					</p>
+					<%if(currentUser && notebook.author.id.equals(currentUser._id)){ %>
+						<a href="/notebooks/<%=notebook._id%>/edit" class="btn btn-warning btn-xs">Edit</a>
+						<form action="/notebooks/<%=notebook._id%>?_method=DELETE" method="POST" class="delete_form">
+							<button class="btn btn-danger btn-xs">
+								Delete
+							</button>
+						</form>					
+					<%}%>
+
+				</div>
+				<div class="well">
+					<div class="text-right">
+						<a href="/notebooks/<%=notebook._id%>/notes/new" class="btn btn-success">Add Note</a>
+					</div>
+					<hr>
+					<% notebook.notes.forEach(function(note){ %>
+						<div class="row">
+							<div class="col-md-12">
+								<strong><%=note.author.username%></strong>
+								<span class="pull-right"></span>
+								<p>
+									<%=note.text%>
+								</p>
+								<%if(currentUser && note.author.id.equals(currentUser._id)){%>
+									<a class="btn btn-xs btn-warning"
+									   href="/notebooks/<%=notebook._id%>/notes/<%=note._id%>/edit">
+										Edit
+									</a>	
+									<form action="/notebooks/<%=notebook._id%>/notes/<%=note._id%>?_method=DELETE"
+									  method="POST" class="delete_form">
+									<button class="btn btn-xs btn-danger">Delete</button>
+									</form> 
+								<%}%>
+							</div>
+						</div>
+					<% }); %>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<%- include("../partials/footer") %>
